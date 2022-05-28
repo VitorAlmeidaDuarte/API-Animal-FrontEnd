@@ -1,0 +1,31 @@
+
+<html>
+    <head>
+      <meta charset="utf-8">
+      <title>Animais</title>
+      <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    </head>
+    <body>
+        
+        <div class="center">
+            <h1>Procurar Animal</h1>
+            <form  class="box_form" action="/Animal/mostrar-informações" method="post">
+                <input type="text" name="nomeAnimal">
+                <input type="submit" value="Procurar">
+            </form>
+            
+        </div>
+        {% set menssages = get_flashed_messages() %}
+        {% if menssages %}
+            <div class="messages_error">
+                {% for msg_error in menssages%}
+                    {{msg_error}}
+                {% endfor %}
+            </div>
+        {% endif %}
+        <form class="admin_button" action="/login">
+            <button type="submit">Pagina Admin</button>
+        </form>
+    </body>
+</body>
+</html>

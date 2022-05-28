@@ -1,0 +1,114 @@
+body{
+    margin: 0;
+    padding: 0;
+    background: rgb(7, 3, 29);
+}
+
+.center{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%)
+
+}
+
+.center h1{
+  color:rgb(255, 255, 255)
+}
+
+.box_form input[type = "text"]{
+    border:0;
+  background: none;
+  display: block;
+  margin: 20px auto;
+  text-align: center;
+  border: 2px solid #0400ff;
+  padding: 14px 10px;
+  width: 200px;
+  outline: none;
+  color: rgb(255, 255, 255);
+  border-radius: 24px;
+  transition: 0.25s;
+}
+
+.box_form input[type = "text"]:focus{
+    width: 280px;
+    border-color: #0051ff;
+}
+
+.box_form input[type = "submit"]{
+    border:0;
+    background: none;
+    display: block;
+    margin: 20px auto;
+    text-align: center;
+    border: 2px solid #0400ff;
+    padding: 14px 40px;
+    outline: none;
+    color: rgb(255, 255, 255);
+    border-radius: 24px;
+    transition: 0.25s;
+    cursor: pointer;
+  }
+.box_form input[type = "submit"]:hover{
+    background: #0051ff;
+  }
+
+
+.inf_animals p{
+  border:0;
+  background: none;
+  display: block;
+  margin: 20px auto;
+  text-align: center;  
+  color: rgb(255, 255, 255);
+  
+} 
+.inf_animals button{
+  border:0;
+  background: none;
+  display: block;
+  margin: 20px auto;
+  text-align: center;
+  border: 2px solid #0400ff;
+  padding: 14px 40px;
+  outline: none;
+  color: rgb(255, 255, 255);
+  border-radius: 24px;
+  transition: 0.25s;
+  cursor: pointer;
+} 
+.inf_animals button[type = "submit"]:hover{
+  background: #0051ff;
+}
+
+.messages_error{
+  border:0;
+  background: none;
+  display: block;
+  margin: 20px auto;
+  text-align: center;  
+  color: rgb(255, 0, 0);
+  line-height: 860px;
+
+}
+
+.admin_button button{
+  border:0;
+  background: none;
+  display: block;
+  margin: 20px auto;
+  text-align: center;
+  border: 2px solid #0400ff;
+  padding: 14px 40px;
+  outline: none;
+  color: rgb(255, 255, 255);
+  border-radius: 24px;
+  transition: 0.25s;
+  cursor: pointer;
+  margin-left: 40px;
+  margin-top: 540px;
+}
+.admin_button button[type = "submit"]:hover{
+  background: #0051ff;
+}

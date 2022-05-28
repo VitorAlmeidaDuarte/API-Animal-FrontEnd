@@ -1,0 +1,21 @@
+<html>
+    <head>
+      <meta charset="utf-8">
+      <title>Animais</title>
+      <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+      <script>
+        function goBack() {
+          window.history.back();
+        }
+        </script>
+    </head>
+    <body>
+        <div class="inf_animals">          
+          <p>Nome: {{inf_animal.nome}}</p>
+          <p>Espescies: {{inf_animal.qtn_especies}}</p>
+          <p>Comportamento: {{inf_animal.comportamento}}</p>
+          <p>Alimentação: {{inf_animal.alimentacao}}</p>
+          <button type="submit" onclick="goBack()">Voltar</button>
+        </div>        
+    </body>
+</html>
