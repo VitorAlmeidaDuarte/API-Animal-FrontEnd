@@ -1,11 +1,11 @@
 
-from Models.Animals import AnimalsManage
+from Models.Animals import AnimalsManage, Animals
 from Models.Images import filter_animal_image, insert_image
 from Models.User import UsersManage, Users
 from config import app_config, app_active
 from flask import Flask, Response, request, render_template, redirect, flash
 from flask_sqlalchemy import SQLAlchemy
-from flask_login import LoginManager, login_required, login_user
+from flask_login import LoginManager, login_required, login_user, logout_user
 
 
 config = app_config[app_active]
@@ -45,7 +45,7 @@ def create_app(condig_name):
     def login():
         return render_template('login.html')
     
-    
+
     @app.route('/autenticar', methods=['POST'])
     def autenticar():
         usuario = request.form.get('usuario')
@@ -60,10 +60,18 @@ def create_app(condig_name):
             flash(str_error)
             return redirect('/login')
 
+    @app.route("/logout", methods=['GET'])
+    @login_required
+    def logout():
+        logout_user()
+        return redirect('/login')            
+
     @app.route('/admin')
     @login_required      
     def admin():
-        return '222', 200
+        animais = Animals.query.all()
+
+        return render_template('/admin.html', animais=animais)
 
 
     @app.route("/Cadastro/animal", methods=["POST"])
@@ -87,22 +95,7 @@ def create_app(condig_name):
         else:
             return {"ERROR": "usuario não encontrado"}
 
-    @app.route("/Animal/mostrar-informações", methods=["POST"])
-    def show_information_animals():
-        nomeAnimal = request.form.get('nomeAnimal')
-
-        if nomeAnimal == '':
-            flash('Escreva um nome de um animal')
-            return redirect('/')
-
-        inf_animal = AnimalsManage.show_animals(nomeAnimal.capitalize())
-
-        if inf_animal:
-            return render_template('animal_inf.html', inf_animal=inf_animal)
-        else:
-            flash('Animal não econtrado')
-            return redirect('/')
-
+    
     @app.route('/Animal/adicionar-foto', methods=['POST'])
     def adicionar_foto():
         file = request.files['imagem']
@@ -157,5 +150,21 @@ def create_app(condig_name):
 
         else:
             {"Error": "usuario não econtrado"}
+
+    @app.route("/Animal/mostrar-informações", methods=["POST"])
+    def show_information_animals():
+        nomeAnimal = request.form.get('nomeAnimal')
+
+        if nomeAnimal == '':
+            flash('Escreva um nome de um animal')
+            return redirect('/')
+
+        inf_animal = AnimalsManage.show_animals(nomeAnimal.capitalize())
+
+        if inf_animal:
+            return render_template('animal_inf.html', inf_animal=inf_animal)
+        else:
+            flash('Animal não econtrado')
+            return redirect('/')            
 
     return app

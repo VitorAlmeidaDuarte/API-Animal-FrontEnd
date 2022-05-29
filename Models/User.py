@@ -54,7 +54,7 @@ class UsersManage():
         objeto_usuario = Users.query.filter_by(nome=nome).first()
 
         if objeto_usuario == None:
-            return False, 'Login ou senha incorretos'
+            return False, 'Login ou senha incorretos', None
         
         senha_vereficada = HashPassword.verify_hash(senha, objeto_usuario.hash)
 
