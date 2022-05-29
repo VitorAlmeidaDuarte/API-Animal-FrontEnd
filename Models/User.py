@@ -1,4 +1,4 @@
-from ssl import HAS_SNI
+from flask_login.mixins import UserMixin
 from flask_sqlalchemy import SQLAlchemy
 from config import app_config, app_active
 from passlib.hash import pbkdf2_sha512
@@ -25,25 +25,43 @@ class HashPassword():
             return False
     
 
-class Users(db.Model):
+class Users(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True)
     nome = db.Column(db.String(40))
     hash = db.Column(db.LargeBinary)
     admin = db.Column(db.Boolean, default=0)
 
+'''
+@property
+def is_authenticated(self):
+    return True
 
+@property
+def is_active(self):
+    return True
+
+@property
+def is_anonymous(self):
+    return True
+
+@property
+def get_id(self):
+    return str(self.id)     
+'''
 
 class UsersManage():
     def verify_user(nome, senha):
-        user = Users.query.filter_by(nome=nome).first()
+        objeto_usuario = Users.query.filter_by(nome=nome).first()
 
+        if objeto_usuario == None:
+            return False, 'Login ou senha incorretos'
         
-        senha_vereficada = HashPassword.verify_hash(senha, user.hash)
+        senha_vereficada = HashPassword.verify_hash(senha, objeto_usuario.hash)
 
         if senha_vereficada:
-            return True
+            return True, None, objeto_usuario
         else:
-            return False
+            return False, 'Login ou senha incorretos', None
 
     def insert_user_banco(nome_recebido, senha_recebida):
 

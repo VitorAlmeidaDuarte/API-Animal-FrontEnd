@@ -112,3 +112,90 @@ body{
 .admin_button button[type = "submit"]:hover{
   background: #0051ff;
 }
+
+
+.box_login_form{
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%)
+
+}
+
+.box_login_form p {
+  border:0;
+  background: none;
+  display: block;
+  margin: 20px auto;
+  text-align: center;  
+  color: rgb(255, 255, 255);
+  font-size: 20;
+}
+
+.box_login_form input[type = "text"]{
+  border:0;
+  background: none;
+  display: block;
+  margin: 20px auto;
+  text-align: center;
+  border: 2px solid #0400ff;
+  padding: 14px 10px;
+  width: 200px;
+  outline: none;
+  color: rgb(255, 255, 255);
+  border-radius: 24px;
+  transition: 0.25s;
+}
+
+.box_login_form input[type = "text"]:focus{
+  width: 280px;
+  border-color: #0051ff;
+}
+
+.box_login_form input[type = "password"]{
+  border:0;
+  background: none;
+  display: block;
+  margin: 20px auto;
+  text-align: center;
+  border: 2px solid #0400ff;
+  padding: 14px 10px;
+  width: 200px;
+  outline: none;
+  color: rgb(255, 255, 255);
+  border-radius: 24px;
+  transition: 0.25s;
+}
+
+.box_login_form input[type = "password"]:focus{
+  width: 280px;
+  border-color: #0051ff;
+}
+
+.box_login_form input[type = "submit"]{
+  border:0;
+  background: none;
+  display: block;
+  margin: 20px auto;
+  text-align: center;
+  border: 2px solid #0400ff;
+  padding: 14px 40px;
+  outline: none;
+  color: rgb(255, 255, 255);
+  border-radius: 24px;
+  transition: 0.25s;
+  cursor: pointer;
+}
+.box_login_form input[type = "submit"]:hover{
+  background: #0051ff;
+}
+
+.messages_error_login{
+  border:0;
+  background: none;
+  display: block;
+  margin: 20px auto;
+  text-align: center;  
+  color: rgb(255, 0, 0);
+  line-height: 950px;
+}

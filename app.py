@@ -1,10 +1,12 @@
 
 from Models.Animals import AnimalsManage
 from Models.Images import filter_animal_image, insert_image
-from Models.User import UsersManage
+from Models.User import UsersManage, Users
 from config import app_config, app_active
 from flask import Flask, Response, request, render_template, redirect, flash
 from flask_sqlalchemy import SQLAlchemy
+from flask_login import LoginManager, login_required, login_user
+
 
 config = app_config[app_active]
 
@@ -21,6 +23,19 @@ def create_app(condig_name):
     db = SQLAlchemy(config.APP)
     db.init_app(app)
 
+    login_manager = LoginManager()
+    login_manager.init_app(app)
+
+    @login_manager.user_loader
+    def load_user(user_id):
+        return Users.query.filter_by(id=user_id).first()
+
+    @login_manager.unauthorized_handler
+    def unauthorized():
+        flash('Você precisa estar logado para acessar essa pagina')    
+        return redirect('/login')
+
+
     @app.route('/')
     def index():
         return render_template('index.html')
@@ -28,7 +43,28 @@ def create_app(condig_name):
 
     @app.route('/login', methods=['GET'])
     def login():
-        return 'dada', 200
+        return render_template('login.html')
+    
+    
+    @app.route('/autenticar', methods=['POST'])
+    def autenticar():
+        usuario = request.form.get('usuario')
+        senha = request.form.get('senha')
+
+        test_user, str_error, objeto_usuario = UsersManage.verify_user(usuario, senha)
+       
+        if test_user:
+            login_user(objeto_usuario)
+            return redirect('/admin')
+        else:
+            flash(str_error)
+            return redirect('/login')
+
+    @app.route('/admin')
+    @login_required      
+    def admin():
+        return '222', 200
+
 
     @app.route("/Cadastro/animal", methods=["POST"])
     def register_animal():
