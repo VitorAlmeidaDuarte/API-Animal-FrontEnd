@@ -201,15 +201,33 @@ body{
   line-height: 950px;
 }
 
-
-
-
-.admin-table-form tr{
-  color: rgb(255, 255, 255);  
-}
-.admin-table-form table{
-  margin-left: auto;
-  margin-right: auto;
-  margin-top: auto;
+.button-admin-CRUD button[type = "submit"]{
+  border:0;
+  background: none;
+  display: block;
+  margin: 20px auto;
   text-align: center;
+  border: 2px solid #0400ff;
+  padding: 14px 40px;
+  outline: none;
+  color: rgb(255, 255, 255);
+  border-radius: 24px;
+  transition: 0.25s;
+  cursor: pointer;
+  margin-left: 40px;
+  margin-top: 540px;
+}
+
+.button-admin-CRUD button[type = "submit"]:hover{
+  background: #0051ff;
+}
+
+.box_form_add_animal p {
+  border:0;
+  background: none;
+  display: block;
+  margin: 20px auto;
+  text-align: center;  
+  color: rgb(255, 255, 255);
+  font-size: 20;
 }

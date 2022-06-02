@@ -1,0 +1,25 @@
+<html lang="pt-br">
+    <head>
+      <meta charset="utf-8">
+      <title>Animal</title>
+      <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    </head>
+    <body>
+        <form class="box_form_add_animal" action="/register_animal" method="post">
+        <p>Nome do animal</p>
+        <input type="text" name="nomeAnimal">
+        
+        <p>Quantas espescies existentes</p>
+        <input type="text" name="qtn_especies">
+        
+        <p>Comportamento</p>
+        <input type="text" name="comportamento"></input>
+
+        <p>Alimentação</p>
+        <input type="text" name="alimentacao">
+        
+        <p>Imagem</p>
+        <input type="image" name="imagem">
+    </form>
+    </body>
+</html>

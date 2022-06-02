@@ -69,32 +69,38 @@ def create_app(condig_name):
     @app.route('/admin')
     @login_required      
     def admin():
-        animais = Animals.query.all()
-
-        return render_template('/admin.html', animais=animais)
+        return render_template('/admin.html')
 
 
-    @app.route("/Cadastro/animal", methods=["POST"])
+    '''@app.route('/cadastro/animal', methods=['GET'])
+    def register_animal_template():
+        return render_template('')'''
+
+    @app.route("/cadastro/animal", methods=["POST", "GET"])
     def register_animal():
-        body = request.get_json()
+        
+        if request.method == 'POST':
+            body = request.get_json()
 
-        user_verify = UsersManage.verify_user(body["nome"], body["password"])
+            user_verify = UsersManage.verify_user(body["nome"], body["password"])
 
-        if user_verify == True:
-            AnimalsManage.insert_animal_banco(
-                body["nomeAnimal"],
-                body["qtnEspecies"],
-                body["comportamento"],
-                body["alimentacao"],
-            )
+            if user_verify == True:
+                AnimalsManage.insert_animal_banco(
+                    body["nomeAnimal"],
+                    body["qtnEspecies"],
+                    body["comportamento"],
+                    body["alimentacao"],
+                )
 
-            return {
-                "Sucesso": "Animal adicionado, não esqueça de adicionar uma foto dele :)"
-            }
+                return {
+                    "Sucesso": "Animal adicionado, não esqueça de adicionar uma foto dele :)"
+                }
 
+            else:
+                return {"ERROR": "usuario não encontrado"}
+                
         else:
-            return {"ERROR": "usuario não encontrado"}
-
+            return render_template('adcionar_animal.html')
     
     @app.route('/Animal/adicionar-foto', methods=['POST'])
     def adicionar_foto():
