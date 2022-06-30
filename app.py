@@ -1,11 +1,10 @@
 
-from Models.Animals import AnimalsManage, Animals
-from Models.Images import filter_animal_image, insert_image
 from Models.User import UsersManage, Users
 from config import app_config, app_active
-from flask import Flask, Response, request, render_template, redirect, flash
+from flask import Flask, request, render_template, redirect, flash
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager, login_required, login_user, logout_user
+from Animal.routes import bp_animal
 
 
 config = app_config[app_active]
@@ -19,12 +18,22 @@ def create_app(condig_name):
     app.config.from_pyfile("config.py")
     app.config["SQLALCHEMY_DATABASE_URI"] = config.SQLALCHEMY_DATABASE_URI
     app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
+    app.register_blueprint(bp_animal)
 
     db = SQLAlchemy(config.APP)
     db.init_app(app)
 
     login_manager = LoginManager()
     login_manager.init_app(app)
+
+    @app.route('/')
+    def index():
+        return render_template('index.html')
+
+    @app.route('/admin')
+    @login_required      
+    def admin():
+        return render_template('/admin.html')           
 
     @login_manager.user_loader
     def load_user(user_id):
@@ -34,11 +43,6 @@ def create_app(condig_name):
     def unauthorized():
         flash('Você precisa estar logado para acessar essa pagina')    
         return redirect('/login')
-
-
-    @app.route('/')
-    def index():
-        return render_template('index.html')
 
 
     @app.route('/login', methods=['GET'])
@@ -66,111 +70,5 @@ def create_app(condig_name):
         logout_user()
         return redirect('/login')            
 
-    @app.route('/admin')
-    @login_required      
-    def admin():
-        return render_template('/admin.html')
-
-
-    '''@app.route('/cadastro/animal', methods=['GET'])
-    def register_animal_template():
-        return render_template('')'''
-
-    @app.route("/cadastro/animal", methods=["POST", "GET"])
-    def register_animal():
-        
-        if request.method == 'POST':
-            body = request.get_json()
-
-            user_verify = UsersManage.verify_user(body["nome"], body["password"])
-
-            if user_verify == True:
-                AnimalsManage.insert_animal_banco(
-                    body["nomeAnimal"],
-                    body["qtnEspecies"],
-                    body["comportamento"],
-                    body["alimentacao"],
-                )
-
-                return {
-                    "Sucesso": "Animal adicionado, não esqueça de adicionar uma foto dele :)"
-                }
-
-            else:
-                return {"ERROR": "usuario não encontrado"}
-                
-        else:
-            return render_template('adcionar_animal.html')
-    
-    @app.route('/Animal/adicionar-foto', methods=['POST'])
-    def adicionar_foto():
-        file = request.files['imagem']
-        body = request.form
-
-        if UsersManage.verify_user(body['nome'], body['password']):
-            minetype = file.mimetype
-            insert_image(file, body['nomeAnimal'], minetype)
-            return {'Sucesso': 'foto do animal adicionado!!'}
-
-        else:
-            return {'ERROR': 'voce não tem permissão para isso'}
-
-
-    @app.route("/Animal/imagem/<nomeAnimal>", methods=["GET"])  
-    def show_animal_picture(nomeAnimal):
-        animal_or_eception = filter_animal_image(nomeAnimal.capitalize())
-        
-        try:
-            return Response(animal_or_eception.img, mimetype=animal_or_eception.mimetype)
-        except:
-            return {'ERROR': 'Aninaml não encontrado'}
-        
-    @app.route("/Animal/modificar", methods=["PUT"])
-    def edit_animal():
-        body = request.get_json()
-
-        user_verify = UsersManage.verify_user(body["nome"], body["password"])
-
-        if user_verify == True:
-            AnimalsManage.modify_animal_origin(
-                nomeAnimal_modify=body["nomeAnimalModificate"],
-                new_qtn_especies=body["newQtnEspecies"],
-                new_alimentacao=body["newAlimentacao"],
-            )
-
-            return {"Sucesso": "animal modificado com exito"}
-
-        else:
-            return {"Error": "usuario não encontrado"}
-
-    @app.route("/Animal/deletar", methods=["DELETE"])
-    def delete_animal():
-        body = request.get_json()
-
-        user_verify = UsersManage.verify_user(body["nome"], body["password"])
-
-        if user_verify:
-            AnimalsManage.delete_animal_origin(body["nomeAnimalDelete"])
-
-            return {"Sucesso": "Animal deletado"}
-
-        else:
-            {"Error": "usuario não econtrado"}
-
-    @app.route("/Animal/mostrar-informações", methods=["POST"])
-    def show_information_animals():
-        nomeAnimal = request.form.get('nomeAnimal')
-
-        if nomeAnimal == '':
-            flash('Escreva um nome de um animal')
-            return redirect('/')
-
-        inf_animal = AnimalsManage.show_animals(nomeAnimal.capitalize())
-
-        if inf_animal:
-            return render_template('animal_inf.html', inf_animal=inf_animal)
-        else:
-            flash('Animal não econtrado')
-            return redirect('/')            
 
     return app

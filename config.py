@@ -12,7 +12,7 @@ class Config(object):
 
     APP = None
     SQLALCHEMY_DATABASE_URI = (
-        "sqlite:///C:/Users/User/Desktop/Project-Animal/bancoDados/Animals-User.db"
+        "sqlite:///C:/Users/User/Desktop/⠀⠀/Programação/API-Animal-FrontEnd/bancoDados/Animals-User.db"
     )
     
 
